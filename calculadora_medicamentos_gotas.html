@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Duração de Medicamento em Gotas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+        h1 {
+            text-align: center;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculadora de Duração de Medicamento em Gotas</h1>
+    <form id="medicationForm">
+        <label for="dropsPerMl">Quantidade de gotas por mL:</label>
+        <input type="number" id="dropsPerMl" name="dropsPerMl" required>
+
+        <label for="bottleVolume">Quantidade em mL do frasco:</label>
+        <input type="number" id="bottleVolume" name="bottleVolume" required>
+
+        <label for="dropsPerDay">Quantidade de gotas utilizadas por dia:</label>
+        <input type="number" id="dropsPerDay" name="dropsPerDay" required>
+
+        <button type="button" onclick="calculate()">Calcular</button>
+    </form>
+
+    <div class="result" id="result"></div>
+
+    <script>
+        function calculate() {
+            const dropsPerMl = parseFloat(document.getElementById('dropsPerMl').value);
+            const bottleVolume = parseFloat(document.getElementById('bottleVolume').value);
+            const dropsPerDay = parseInt(document.getElementById('dropsPerDay').value);
+
+            if (isNaN(dropsPerMl) || isNaN(bottleVolume) || isNaN(dropsPerDay)) {
+                document.getElementById('result').innerHTML = "Por favor, preencha todos os campos corretamente.";
+                return;
+            }
+
+            // Quantidade total de gotas em um frasco
+            const totalDropsInBottle = dropsPerMl * bottleVolume;
+
+            // Quantidade de dias que o frasco dura
+            const daysBottleLasts = totalDropsInBottle / dropsPerDay;
+
+            // Quantidade de frascos necessários para 30 dias
+            const bottlesFor30Days = Math.ceil(30 / daysBottleLasts);
+
+            document.getElementById('result').innerHTML = `
+                Cada frasco contém aproximadamente <strong>${totalDropsInBottle.toFixed(0)} gotas</strong>.<br>
+                O frasco durará cerca de <strong>${daysBottleLasts.toFixed(1)} dias</strong> com a dosagem atual.<br>
+                Você precisará de <strong>${bottlesFor30Days} frasco(s)</strong> para um tratamento de 30 dias.
+            `;
+        }
+    </script>
+</body>
+</html>
